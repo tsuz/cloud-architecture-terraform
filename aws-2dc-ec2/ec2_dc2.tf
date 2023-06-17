@@ -59,7 +59,7 @@ resource "aws_security_group" "dc2" {
   }
 
   egress {
-    description = "DC1 external access"
+    description = "DC1 access"
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
