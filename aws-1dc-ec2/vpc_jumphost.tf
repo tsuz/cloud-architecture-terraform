@@ -13,11 +13,11 @@ resource "aws_vpc" "jumphost" {
 
 # Create public jumphost subnet
 resource "aws_subnet" "jumphost-public" {
-  provider          = aws.dc1
-  vpc_id            = aws_vpc.jumphost.id
-  cidr_block        = var.jumphost_vpc_cidr_block
-  availability_zone = var.jumphost_az
-  map_public_ip_on_launch = true  
+  provider                = aws.dc1
+  vpc_id                  = aws_vpc.jumphost.id
+  cidr_block              = var.jumphost_vpc_cidr_block
+  availability_zone       = var.jumphost_az
+  map_public_ip_on_launch = true
   tags = {
     Name = "${var.name}-jumphost-subnet-${var.jumphost_az}"
   }
@@ -52,8 +52,8 @@ resource "aws_route" "jumphost_ssh" {
 
 resource "aws_route" "jumphost_to_ec2" {
   vpc_peering_connection_id = aws_vpc_peering_connection_accepter.ec2.id
-  route_table_id         = aws_route_table.jumphost.id
-  destination_cidr_block = var.ec2_vpc_cidr_block
+  route_table_id            = aws_route_table.jumphost.id
+  destination_cidr_block    = var.ec2_vpc_cidr_block
 }
 
 # Associate private Subnet 1 to "private Route Table"
