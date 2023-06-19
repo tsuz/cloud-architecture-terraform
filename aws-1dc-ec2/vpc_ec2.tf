@@ -36,9 +36,11 @@ resource "aws_route_table" "ec2-private" {
     vpc_peering_connection_id = aws_vpc_peering_connection.jumphost.id
   }
 
+  # connects private subnets to NAT gateway which then allows external internet access
+  # alternatively, just create all subnets as public and prevent access from the outside
   route {
     cidr_block = "0.0.0.0/0"
-    # Use replace to chnage "private-1a" to "public-1a"
+    # replace "private-1a" to "public-1a"
     nat_gateway_id = aws_nat_gateway.dc1-nat[replace(each.key, "private", "public")].id
   }
 
@@ -48,7 +50,6 @@ resource "aws_route_table" "ec2-private" {
 }
 
 # Associate private Subnet 1 to "private Route Table"
-# terraform aws associate subnet with route table
 resource "aws_route_table_association" "dc1-route-table-association" {
   provider       = aws.dc1
   for_each       = var.dc1_zones.private_subnets
@@ -59,9 +60,7 @@ resource "aws_route_table_association" "dc1-route-table-association" {
 
 
 
-
-# Create Route Table and Add private Route
-# terraform aws create route table
+# Create Route Table for public subnets
 resource "aws_route_table" "ec2-public" {
   provider = aws.dc1
   for_each = var.dc1_zones.public_subnets
@@ -92,7 +91,7 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-# Create Public Subnet to enable pulling ECR images by Fargate
+# Create Public Subnet required for an access to public internet
 resource "aws_subnet" "ec2-public" {
   provider                = aws.dc1
   for_each                = var.dc1_zones.public_subnets
@@ -115,7 +114,7 @@ resource "aws_eip" "dc1-eip" {
   }
 }
 
-# Allow outbound internet to pull ECR images
+# Connect NAT to elastic IP for public access
 resource "aws_nat_gateway" "dc1-nat" {
   for_each      = var.dc1_zones.public_subnets
   allocation_id = aws_eip.dc1-eip[each.key].id
@@ -128,23 +127,10 @@ resource "aws_nat_gateway" "dc1-nat" {
   depends_on = [aws_internet_gateway.igw]
 }
 
-
-# # Associate public Subnet 1 to "public Route Table"
-# # terraform aws associate subnet with route table
+# Associate public Subnet to "public Route Table"
 resource "aws_route_table_association" "dc1-public-route-table-association" {
   provider       = aws.dc1
   for_each       = var.dc1_zones.public_subnets
   subnet_id      = aws_subnet.ec2-public[each.key].id
   route_table_id = aws_route_table.ec2-public[each.key].id
 }
-
-
-# resource "aws_route" "public_access" {
-#   for_each       = aws_route_table.ec2
-#   route_table_id = each.value.id
-
-
-#   destination_cidr_block = "0.0.0.0/0"
-#   # Use replace to chnage "private-1a" to "public-1a"
-#   gateway_id = aws_nat_gateway.dc1-nat[replace(each.key, "private", "public")].id
-# }
