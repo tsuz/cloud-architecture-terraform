@@ -55,5 +55,22 @@ variable "dc1_zones" {
         az   = "ap-northeast-1d"
       }
     }
+    public_subnets = {
+      public-1a = {
+        name = "public-1a"
+        cidr = "172.16.13.0/24"
+        az   = "ap-northeast-1a"
+      },
+      public-1c = {
+        name = "public-1c"
+        cidr = "172.16.14.0/24"
+        az   = "ap-northeast-1c"
+      },
+      public-1d = {
+        name = "public-1d"
+        cidr = "172.16.15.0/24"
+        az   = "ap-northeast-1d"
+      }
+    }
   }
 }
