@@ -44,30 +44,10 @@ resource "aws_route_table" "dc1-public" {
   for_each = var.dc1_zones.public_subnets
   vpc_id   = aws_vpc.dc1.id
 
-  # route {
-  #   cidr_block                = var.jumphost_vpc_cidr_block
-  #   vpc_peering_connection_id = aws_vpc_peering_connection.jumphost.id
-  # }
-
-  # route {
-  #   cidr_block = "0.0.0.0/0"
-  #   gateway_id = aws_internet_gateway.igw_dc1.id
-  # }
-
-
   tags = {
     Name = "${var.name}-aws-route-table-${each.value.name}"
   }
 }
-
-# AWS Route from DC1 to jumphost
-# resource "aws_route" "dc1_jumphost_public" {
-#   provider                  = aws.dc1
-#   for_each                  = aws_route_table.dc1-public
-#   vpc_peering_connection_id = aws_vpc_peering_connection.jumphost.id
-#   route_table_id            = each.value.id
-#   destination_cidr_block    = var.jumphost_vpc_cidr_block
-# }
 
 # AWS Route from DC1 to jumphost
 resource "aws_route" "dc1_to_igw" {
