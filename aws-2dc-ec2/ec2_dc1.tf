@@ -47,26 +47,26 @@ resource "aws_security_group" "dc1" {
 
   ingress {
     description = "Port 22 from VPC"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = [var.jumphost_vpc_cidr_block]
   }
 
   ingress {
-    description = "DC2 internal access"
+    description = "All Internal Access"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [var.dc2_vpc_cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    description = "DC2 access"
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = [var.dc2_vpc_cidr_block]
+    description = "All Egress Traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {

@@ -49,18 +49,18 @@ resource "aws_security_group" "ssh" {
 
   egress {
     description = "DC1 access"
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = [var.dc1_vpc_cidr_block]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.dc1_vpc_cidr_block]
   }
 
   egress {
     description = "DC2 access"
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = [var.dc2_vpc_cidr_block]
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = [var.dc2_vpc_cidr_block]
   }
 
   tags = {

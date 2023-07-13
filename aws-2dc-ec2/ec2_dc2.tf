@@ -43,27 +43,27 @@ resource "aws_security_group" "dc2" {
   vpc_id   = aws_vpc.dc2.id
 
   ingress {
-    description = "Jumphost access"
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
+    description = "Port 22 from VPC"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
     cidr_blocks = [var.jumphost_vpc_cidr_block]
   }
 
   ingress {
-    description = "DC1 access"
+    description = "All Internal Access"
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
-    cidr_blocks = [var.dc1_vpc_cidr_block]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   egress {
-    description = "DC1 access"
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = [var.dc1_vpc_cidr_block]
+    description = "All Egress Traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   tags = {
