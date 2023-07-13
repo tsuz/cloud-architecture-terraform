@@ -43,24 +43,11 @@ resource "aws_route53_vpc_association_authorization" "jumphost" {
   zone_id  = aws_route53_zone.private.id
 }
 
-# resource "aws_route53_zone_association" "jumphost" {
-#   provider = aws.dc1
-#   zone_id  = aws_route53_zone.private.zone_id
-#   vpc_id   = aws_vpc.jumphost.id
-# }
-
 resource "aws_route53_vpc_association_authorization" "dc2" {
   provider = aws.dc2
   vpc_id   = aws_vpc.dc2.id
   zone_id  = aws_route53_zone.private.id
 }
-
-# resource "aws_route53_zone_association" "dc2" {
-#   provider = aws.dc2
-#   zone_id  = aws_route53_zone.private.zone_id
-#   vpc_id   = aws_vpc.dc2.id
-# }
-
 
 output "dc1_instance_dns" {
   value = { for k, v in aws_route53_record.dc1 : k => v.fqdn }
