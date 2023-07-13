@@ -68,6 +68,23 @@ variable "dc1_zones" {
         az   = "ap-northeast-1d"
       }
     }
+    public_subnets = {
+      public-1a = {
+        name = "public-1a"
+        cidr = "172.16.13.0/24"
+        az   = "ap-northeast-1a"
+      },
+      public-1c = {
+        name = "public-1c"
+        cidr = "172.16.14.0/24"
+        az   = "ap-northeast-1c"
+      },
+      public-1d = {
+        name = "public-1d"
+        cidr = "172.16.15.0/24"
+        az   = "ap-northeast-1d"
+      }
+    }
   }
 }
 
@@ -77,19 +94,36 @@ variable "dc2_zones" {
   type = map(any)
   default = {
     private_subnets = {
-      private-1a = {
+      private-3a = {
         name = "private-3a"
         cidr = "172.17.20.0/24"
         az   = "ap-northeast-3a"
       },
-      private-1c = {
+      private-3b = {
         name = "private-3b"
         cidr = "172.17.21.0/24"
         az   = "ap-northeast-3b"
       },
-      private-1d = {
+      private-3c = {
         name = "private-3c"
         cidr = "172.17.22.0/24"
+        az   = "ap-northeast-3c"
+      }
+    }
+    public_subnets = {
+      public-3a = {
+        name = "public-3a"
+        cidr = "172.17.23.0/24"
+        az   = "ap-northeast-3a"
+      },
+      public-3b = {
+        name = "public-3b"
+        cidr = "172.17.24.0/24"
+        az   = "ap-northeast-3b"
+      },
+      public-3c = {
+        name = "public-3c"
+        cidr = "172.17.25.0/24"
         az   = "ap-northeast-3c"
       }
     }

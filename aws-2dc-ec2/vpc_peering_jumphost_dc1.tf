@@ -15,6 +15,13 @@ resource "aws_vpc_peering_connection" "jumphost" {
   tags = {
     Side = "${var.name}-vpc-peering-request-jumphost-dc1"
   }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+      tags_all
+    ]
+  }
 }
 
 
@@ -26,5 +33,12 @@ resource "aws_vpc_peering_connection_accepter" "dc1_accept_jumphost" {
 
   tags = {
     Side = "${var.name}-vpc-peering-accepter-jumphost-dc1"
+  }
+
+  lifecycle {
+    ignore_changes = [
+      tags,
+      tags_all
+    ]
   }
 }
