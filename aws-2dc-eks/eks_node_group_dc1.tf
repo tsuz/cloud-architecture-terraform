@@ -16,10 +16,10 @@ resource "aws_eks_node_group" "dc1_node_group" {
   # disk_size      = 100
   # instance_types = ["r5.large"]
 
-  # launch_template {
-  #   id      = aws_launch_template.dc1_eks_instance.id
-  #   version = "$Latest"
-  # }
+  launch_template {
+    id      = aws_launch_template.dc1_eks_instance.id
+    version = "$Latest"
+  }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
