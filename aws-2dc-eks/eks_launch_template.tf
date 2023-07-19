@@ -53,7 +53,7 @@ resource "aws_launch_template" "dc1_eks_instance" {
   image_id = "ami-0da7cdd9d693ada5f"
 #   image_id = data.aws_ami.dc1_ubuntu.id
 
-  instance_type = "r5.large"
+  instance_type = "t3.medium"
 
   # See "Configure the user data for your worker nodes" in
   # https://repost.aws/knowledge-center/eks-worker-nodes-cluster
@@ -72,11 +72,11 @@ Content-Type: text/x-shellscript; charset="us-ascii"
   EOF
   )
 
-  network_interfaces {
-    security_groups = [
-        aws_security_group.dc2_to_dc1_traffic.id,
-        aws_eks_cluster.dc1_eks.vpc_config[0].cluster_security_group_id]
-  }
+#   network_interfaces {
+#     security_groups = [
+#         aws_security_group.dc2_to_dc1_traffic.id,
+#         aws_eks_cluster.dc1_eks.vpc_config[0].cluster_security_group_id]
+#   }
 
   # However, if you want to use your own custom security groups, 
   # you have to include both the custom security group that you want AND 
