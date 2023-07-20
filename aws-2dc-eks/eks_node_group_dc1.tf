@@ -13,9 +13,6 @@ resource "aws_eks_node_group" "dc1_node_group" {
     min_size     = 0
   }
 
-  # disk_size      = 100
-  # instance_types = ["r5.large"]
-
   launch_template {
     id      = aws_launch_template.dc1_eks_instance.id
     version = "$Latest"
