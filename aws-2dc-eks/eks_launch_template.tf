@@ -81,10 +81,10 @@ Content-Type: text/x-shellscript; charset="us-ascii"
   # However, if you want to use your own custom security groups, 
   # you have to include both the custom security group that you want AND 
   # the default EKS Cluster’s security group in order to allow the necessary network connections.
-#   vpc_security_group_ids = [
-#     aws_security_group.dc2_to_dc1_traffic.id,
-#     aws_eks_cluster.dc1_eks.vpc_config[0].cluster_security_group_id,
-#   ]
+  vpc_security_group_ids = [
+    aws_eks_cluster.dc1_eks.vpc_config[0].cluster_security_group_id,
+    aws_security_group.dc2_to_dc1_traffic.id,
+  ]
 
   tag_specifications {
     resource_type = "instance"
