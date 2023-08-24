@@ -55,15 +55,14 @@ resource "aws_launch_template" "dc1_eks_instance" {
   }
 
 
-  image_id = "ami-0da7cdd9d693ada5f"
-#   image_id = data.aws_ami.dc1_ubuntu.id
+  image_id = data.aws_ssm_parameter.dc1_amzn2_ami.value
 
   instance_type = "t3.medium"
 
   # See "Configure the user data for your worker nodes" in
   # https://repost.aws/knowledge-center/eks-worker-nodes-cluster
-    # user_data = (base64encode("#!/bin/bash\nset -o xtrace\n/etc/eks/bootstrap.sh ${aws_eks_cluster.dc1_eks.id}"
-    # ))
+  # user_data = (base64encode("#!/bin/bash\nset -o xtrace\n/etc/eks/bootstrap.sh ${aws_eks_cluster.dc1_eks.id}"
+  # ))
   user_data = base64encode(<<-EOF
 MIME-Version: 1.0
 Content-Type: multipart/mixed; boundary="==MYBOUNDARY=="
