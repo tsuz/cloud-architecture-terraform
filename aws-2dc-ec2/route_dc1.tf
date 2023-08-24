@@ -4,7 +4,7 @@
 resource "aws_route" "dc1_to_jumphost_private" {
   provider                  = aws.dc1
   for_each                  = aws_route_table.dc1-private
-  vpc_peering_connection_id = aws_vpc_peering_connection.jumphost.id
+  vpc_peering_connection_id = aws_vpc_peering_connection.jumphost_dc1.id
   route_table_id            = each.value.id
   destination_cidr_block    = var.jumphost_vpc_cidr_block
 }
@@ -16,6 +16,16 @@ resource "aws_route" "dc1_to_dc2" {
   vpc_peering_connection_id = aws_vpc_peering_connection_accepter.dc2_accept_dc1.id
   route_table_id            = each.value.id
   destination_cidr_block    = var.dc2_vpc_cidr_block
+}
+
+# AWS Route from private subnet to public subnet
+resource "aws_route" "dc1_private_to_public" {
+  provider               = aws.dc1
+  for_each               = aws_route_table.dc1-private
+  destination_cidr_block = "0.0.0.0/0"
+  route_table_id         = each.value.id
+  # replace "private-1a" to "public-1a"
+  nat_gateway_id = aws_nat_gateway.dc1-nat[replace(each.key, "private", "public")].id
 }
 
 # Create Route Table for private subnets

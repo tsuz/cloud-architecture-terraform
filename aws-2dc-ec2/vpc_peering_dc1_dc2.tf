@@ -26,12 +26,5 @@ resource "aws_vpc_peering_connection_accepter" "dc2_accept_dc1" {
   tags = {
     Side = "${var.name}-vpc-dc1-to-dc2"
   }
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-      tags_all
-    ]
-  }
 }
 

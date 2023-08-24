@@ -1,7 +1,7 @@
 
 
 # DC2 to Jumphost connection
-resource "aws_route" "dc2_to_jumphost" {
+resource "aws_route" "dc2_to_jumphost_private" {
   provider                  = aws.dc2
   for_each                  = aws_route_table.dc2-private
   vpc_peering_connection_id = aws_vpc_peering_connection.jumphost_dc2.id
@@ -10,12 +10,22 @@ resource "aws_route" "dc2_to_jumphost" {
 }
 
 # AWS Route from DC2 to DC1
-resource "aws_route" "dc2_to_dc1_private" {
+resource "aws_route" "dc2_to_dc1" {
   provider                  = aws.dc2
   for_each                  = aws_route_table.dc2-private
   vpc_peering_connection_id = aws_vpc_peering_connection.dc1_dc2.id
   route_table_id            = each.value.id
   destination_cidr_block    = var.dc1_vpc_cidr_block
+}
+
+# AWS Route from private subnet to public subnet
+resource "aws_route" "dc2_private_to_public" {
+  provider               = aws.dc2
+  for_each               = aws_route_table.dc2-private
+  destination_cidr_block = "0.0.0.0/0"
+  route_table_id         = each.value.id
+  # replace "private-1a" to "public-1a"
+  nat_gateway_id = aws_nat_gateway.dc2-nat[replace(each.key, "private", "public")].id
 }
 
 

@@ -24,11 +24,4 @@ resource "aws_vpc_peering_connection_accepter" "dc2_accept_jumphost" {
   tags = {
     Side = "${var.name}-vpc-peering-accepter-jumphost-dc2"
   }
-
-  lifecycle {
-    ignore_changes = [
-      tags,
-      tags_all
-    ]
-  }
 }

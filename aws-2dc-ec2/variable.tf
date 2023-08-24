@@ -28,7 +28,7 @@ variable "dc1_ssh_keyname" {
 # Name of the SSH key to be setup in DC2 instances
 # This must be uploaded beforehand in DC2 so it can be referenced as a string
 variable "dc2_ssh_keyname" {
-  default = "ap_northeast_3_taku"
+  default = "ap_northeast_1_taku"
 }
 
 # Where to deploy jumphost for SSH access
